@@ -12,6 +12,11 @@ app.get('/', // our endpoint name
       responess.send('Hello World') // our endpoint function response
     })
 
+    app.get('/', // our endpoint name
+    (request, responess) => { // callback function of what we should do with our request
+     request
+    })
+
 // app.listen(3000) // kick start the express server to work
 app.listen(PORT, () => {
     console.log(`this is me ${PORT}`,require('./data/weather.json'))
