@@ -2,12 +2,21 @@ const express = require('express') // require the express package ==> import Rea
 require('dotenv').config();
 let data = require('./data/weather.json')
 const cors = require('cors');
+const axios = require('axios');
+const WEATHERBIT_KEY = process.env.WEATHERBIT_KEY;
+const WEATHERBIT_URL = process.env.WEATHERBIT_URL;
+const THEMOVIEDB_KEY = process.env.THEMOVIEDB_KEY;
+const THEMOVIEDB_URL = process.env.THEMOVIEDB_URL;
 const app = express() // initialize your express app instance
+
+const Forecast = require('./models/Forecast');
+const Movie = require('./models/Movie');
+const { response } = require('express');
 
 app.use(cors())
 const PORT = process.env.PORT;
 
-class Forecast {
+class LAB7 {
   constructor(value) {
     this.valid_date = value.valid_date;
     this.description = value.weather.description;
@@ -27,9 +36,10 @@ app.get('/weather', (req, res) => {
       element.city_name.toLowerCase() === searchQuery.toLowerCase() ||
       (element.lat === lat && element.lon === lon)
     );
-    let forecastArr = weatherDta.data.map(items => { 
+    let forecastArr = weatherDta.data.map(items => {
       console.log(items)
-      return  new Forecast(items)});
+      return new lab7(items)
+    });
     res.send(forecastArr);
   }
   catch (e) {
@@ -39,11 +49,35 @@ app.get('/weather', (req, res) => {
 
 ///////////////////////////////lab 08///////////////////
 
-app.get('/weather2' , (req,res)=>{
+app.get('/weather2', async (req, res) => {
   let { lat, lon } = req.query;
-})
+  // let response = axios.get(`${WEATHERIT_URL}?key=${WEATHERIT_KEY}&lat=${lat}&lon=${lon}`)
+  let QueryParams = {
+    params: {
+      key: WEATHERBIT_KEY,
+      lat: lat,
+      lon: lon
+    }
+  }
+  const response = await axios.get(WEATHERBIT_URL, QueryParams)
+  const data = response.data.data.map(item => new Forecast(item));
+  res.json(data);
 
+});
+///////////////////////////////////////////////////////////////////////////
+app.get('/movie'), async (req, res) => {
+  let { searchQuery } = req.query;
+  let QueryParams2 = {
+    params: {
+      key: THEMOVIEDB_KEY,
+      searchQuery: searchQuery
+    }
+  }
+  const response2 = await axios.get(THEMOVIEDB_URL, QueryParams2)
+  const data2 = response2.data.map(item => new Movie(item))
+  res.json(data2)
+}
 // app.listen(3000) // kick start the express server to work
 app.listen(PORT, () => {
-  console.log(`this is me ${PORT}`, require('./data/weather.json'))
+  console.log(`this is me ${PORT}`)
 })
