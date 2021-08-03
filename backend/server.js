@@ -37,6 +37,12 @@ app.get('/weather', (req, res) => {
   }
 });
 
+///////////////////////////////lab 08///////////////////
+
+app.get('/weather2' , (req,res)=>{
+  let { lat, lon } = req.query;
+})
+
 // app.listen(3000) // kick start the express server to work
 app.listen(PORT, () => {
   console.log(`this is me ${PORT}`, require('./data/weather.json'))
