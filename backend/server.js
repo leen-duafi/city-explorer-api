@@ -11,7 +11,7 @@ const app = express() // initialize your express app instance
 
 const Forecast = require('./models/Forecast');
 const Movie = require('./models/Movie');
-const { response } = require('express');
+const { response, query } = require('express');
 
 app.use(cors())
 const PORT = process.env.PORT;
@@ -65,19 +65,20 @@ app.get('/weather2', async (req, res) => {
 
 });
 ///////////////////////////////////////////////////////////////////////////
-app.get('/movie'), async (req, res) => {
-  let { searchQuery } = req.query;
+app.get('/movie', async (req, res) => {
+  let { query } = req.query;
+  console.log(query)
   let QueryParams2 = {
     params: {
       key: THEMOVIEDB_KEY,
-      searchQuery: searchQuery
+      query: query
     }
   }
-  const response2 = await axios.get(THEMOVIEDB_URL, QueryParams2)
-  const data2 = response2.data.map(item => new Movie(item))
+
+  const response2 = await axios.get(`https://api.themoviedb.org/3/search/movie?api_key=94244dbb1b056aa2e7a1b54cf7a87581&query=${query}`)
+  console.log(response2)
+  const data2 = response2.data.results.map(item => new Movie(item));
   res.json(data2)
-}
-// app.listen(3000) // kick start the express server to work
-app.listen(PORT, () => {
-  console.log(`this is me ${PORT}`)
-})
+});
+
+app.listen(PORT,()=>console.log('listing on port'))
