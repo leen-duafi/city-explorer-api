@@ -2,13 +2,12 @@ class Movie {
     constructor(movie) {
         this.title = movie.title
         this.overview = movie.overview
-        this.total_votes = movie.total_votes
-        this.image_url = movie.image_url
         this.popularity = movie.popularity
-        this.released_on = movie.released_on
+        this.release_date = movie.release_date
+        this.vote_count = movie.vote_count
 
     }
 }
 
 
-module.exports = Movie ;
+module.exports = Movie;
