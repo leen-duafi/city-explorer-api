@@ -2,9 +2,11 @@ const express = require('express') // require the express package ==> import Rea
 require('dotenv').config();
 const cors = require('cors');
 const getMovie = require('./controller/Movie.controller');
-const { getWeather1, getWeather2 } = require('./controller/Weather.controller')
+// const { getWeather1, getWeather2 } = require('./controller/Weather.controller')
+const getWeather2=require('./controller/Weather.controller')
 const app = express() // initialize your express app instance
 const PORT = process.env.PORT;
+
 
 app.use(cors())
 
@@ -13,7 +15,7 @@ app.get('/', // our endpoint name
     responess.send('Hello World') // our endpoint function response
   })
 
-app.get('/weather', getWeather1);//from json file
+// app.get('/weather', getWeather1);//from json file
 ///////////////////////////////lab 08///////////////////
 app.get('/weather2', getWeather2);///from api 
 ///////////////////////////////////////////////////////////////////////////
